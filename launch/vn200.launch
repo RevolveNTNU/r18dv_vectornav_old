@@ -1,6 +1,6 @@
 <launch>
 
-	<node pkg="vectornav" type="vn200_node" name="vectornav"  output="screen" > 
+	<node pkg="r18dv_vectornav" type="vn200_node" name="vectornav"  output="screen" > 
 	  
 	  <param name="serial_port" type="string" value="/dev/ttyTHS0" />
 	  <param name="serial_baud" type="int"    value="115200" />
