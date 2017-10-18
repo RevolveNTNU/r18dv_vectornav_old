@@ -527,6 +527,7 @@ int main(int argc, char* argv[])
         ATTITUDEGROUP_NONE,
         INSGROUP_NONE);
 
+    vn200.writeAsyncDataOutputType(VNOFF); 
     vn200.writeBinaryOutput1(gps_log_reg);
     vn200.writeBinaryOutput2(ins_log_reg);
     vn200.writeBinaryOutput3(imu_log_reg);
