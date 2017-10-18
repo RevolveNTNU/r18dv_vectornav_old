@@ -418,9 +418,9 @@ int main(int argc, char* argv[])
     n_.param<int>(        "async_output_rate"  , async_output_rate, 50); 
     
     n_.param<int>(        "binary_data_output_port"  , binary_data_output_port, 1); 
-    n_.param<int>(        "binary_gps_data_output_rate"  , binary_gps_data_rate, 4); 
-    n_.param<int>(        "binary_ins_data_output_rate"  , binary_ins_data_rate, 20); 
-    n_.param<int>(        "binary_imu_data_output_rate"  , binary_imu_data_rate, 100); 
+    n_.param<int>(        "binary_gps_data_output_rate"  , binary_gps_data_rate, 25); 
+    n_.param<int>(        "binary_ins_data_output_rate"  , binary_ins_data_rate, 50); 
+    n_.param<int>(        "binary_imu_data_output_rate"  , binary_imu_data_rate, 25); 
 
     // Validate the rate inputs.
     if (binary_gps_data_rate < 1 || binary_gps_data_rate > raw_imu_max_rate) {
