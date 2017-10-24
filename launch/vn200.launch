@@ -17,6 +17,8 @@
 	  <param name="imu/frame_id" type="string" value="LLA" />
 	  <param name="gps/frame_id" type="string" value="LLA" />
 	</node>	
+
+  <node pkg="r18dv_vectornav" type="vn_sensor_msgs.py" name="vectornavMsgs"  output="screen" /> 
 	
 </launch>
 
