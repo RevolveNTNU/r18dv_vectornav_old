@@ -36,10 +36,10 @@
 #include <signal.h>
 #include <time.h>
 // Message Types
-#include <vectornav/utc_time.h>
-#include <vectornav/gps.h>
-#include <vectornav/ins.h>
-#include <vectornav/sensors.h>
+#include <r18dv_vectornav/utc_time.h>
+#include <r18dv_vectornav/gps.h>
+#include <r18dv_vectornav/ins.h>
+#include <r18dv_vectornav/sensors.h>
 
 #include <ros/xmlrpc_manager.h>
 
@@ -145,7 +145,7 @@ void publish_gps_data()
 
     if (pub_gps.getNumSubscribers() > 0)
     {
-        vectornav::gps msg_gps;
+        r18dv_vectornav::gps msg_gps;
         msg_gps.header.seq      = gps_seq;
         msg_gps.header.stamp    = timestamp;
         msg_gps.header.frame_id = "gps";
@@ -189,7 +189,7 @@ void publish_ins_data()
 
     if (pub_ins.getNumSubscribers() > 0)
     {
-        vectornav::ins msg_ins;
+        r18dv_vectornav::ins msg_ins;
         msg_ins.header.seq      = ins_seq;
         msg_ins.header.stamp    = timestamp;
         msg_ins.header.frame_id = "ins";
@@ -250,7 +250,7 @@ void publish_imu_data()
     ros::Time timestamp =  ros::Time::now(); 
     // IMU Data
     if (pub_sensors.getNumSubscribers() > 0) {
-        vectornav::sensors msg_sensors;
+        r18dv_vectornav::sensors msg_sensors;
         msg_sensors.header.seq      = imu_seq;
         msg_sensors.header.stamp    = timestamp;
         msg_sensors.header.frame_id = "imu";
@@ -348,10 +348,10 @@ void binaryMessageReceived(void * user_data, Packet & p, size_t index)
             }
             break;
         default:
-            ROS_WARN("Received unknown group signature from vectornav");
+            ROS_WARN("Received unknown group signature from r18dv_vectornav");
         }
     } else {
-        ROS_WARN("Received invalid packet from vectornav.");
+        ROS_WARN("Received invalid packet from r18dv_vectornav.");
         // Ignore non-binary packets for now.
     }
 }
@@ -388,7 +388,7 @@ void shutdownCallback(XmlRpc::XmlRpcValue& params, XmlRpc::XmlRpcValue& result)
 int main(int argc, char* argv[])
 {
     // Initialize ROS;
-    ros::init(argc, argv, "vectornav", ros::init_options::NoSigintHandler);
+    ros::init(argc, argv, "r18dv_vectornav", ros::init_options::NoSigintHandler);
     ros::NodeHandle n; 
     ros::NodeHandle n_("~");
 
@@ -460,9 +460,9 @@ int main(int argc, char* argv[])
       static_cast<AsyncMode>(binary_data_output_port);
 
     // Initialize Publishers
-    pub_ins     = n_.advertise<vectornav::ins>    ("ins", 1000);
-    pub_gps     = n_.advertise<vectornav::gps>    ("gps", 1000);
-    pub_sensors = n_.advertise<vectornav::sensors>("imu", 1000);
+    pub_ins     = n_.advertise<r18dv_vectornav::ins>    ("ins", 1000);
+    pub_gps     = n_.advertise<r18dv_vectornav::gps>    ("gps", 1000);
+    pub_sensors = n_.advertise<r18dv_vectornav::sensors>("imu", 1000);
 
     // Initialize VectorNav
     //VN_ERROR_CODE vn_retval;
