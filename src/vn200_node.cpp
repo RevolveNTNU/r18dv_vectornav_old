@@ -334,8 +334,8 @@ void binaryMessageReceived(void * user_data, Packet & p, size_t index)
         case imu_group_signature:
             ++imu_msg_count;
             imu_binary_data.gps_time =     p.extractUint64();
-            imu_binary_data.accel =        p.extractVec3f();
             imu_binary_data.angular_rate = p.extractVec3f();
+            imu_binary_data.accel =        p.extractVec3f();
 
             publish_imu_data();
             if (remainder(imu_msg_count, 500) == 0) {
