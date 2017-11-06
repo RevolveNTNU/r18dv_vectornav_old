@@ -37,8 +37,8 @@ from sensor_msgs.msg  import NavSatFix
 from sensor_msgs.msg  import NavSatStatus
 from sensor_msgs.msg  import TimeReference
 
-from vectornav.msg    import ins
-from vectornav.msg    import sensors
+from r18dv_vectornav.msg    import ins
+from r18dv_vectornav.msg    import sensors
 
 import math
 
