@@ -57,10 +57,11 @@ def sub_imuCB(msg_in):
   msg_imu.angular_velocity.x    = msg_in.Gyro.x
   msg_imu.angular_velocity.y    = -msg_in.Gyro.y
   msg_imu.angular_velocity.z    = -msg_in.Gyro.z
-  msg_imu.linear_acceleration.x = msg_in.Accel.x
-  msg_imu.linear_acceleration.y = msg_in.Accel.y
-  msg_imu.linear_acceleration.z = msg_in.Accel.z
+  msg_imu.angular_velocity_covariance = [0.0015, 0, 0, 0, 0.0015, 0, 0, 0, 0.0015] 
+  msg_imu.linear_acceleration.x = msg_in.Accel.x-0.1227
+  msg_imu.linear_acceleration.y = -msg_in.Accel.y-(-0.0950)
   msg_imu.linear_acceleration.z = -msg_in.Accel.z
+  msg_imu.linear_acceleration_covariance = [1.4362e-4, 0, 0, 0, 1.5047e-4, 0, 0, 0, 1.5e-4] 
   pub_imu.publish(msg_imu)               
   
 #  msg_mag = MagneticField()
@@ -105,6 +106,7 @@ def sub_insCB(msg_in):
   msg_imu.orientation.y = q[1]
   msg_imu.orientation.z = q[2]
   msg_imu.orientation.w = q[3]
+  msg_imu.orientation_covariance[8]=1
          
   pub_imu.publish(msg_imu)
   
