@@ -61,26 +61,25 @@ def sub_imuCB(msg_in):
   msg_imu.linear_acceleration.z = msg_in.Accel.z
   pub_imu.publish(msg_imu)               
   
-  msg_mag = MagneticField()
-  msg_mag.header.stamp     = msg_in.header.stamp
-  msg_mag.header.frame_id  = msg_in.header.frame_id
-  msg_mag.magnetic_field.x = msg_in.Mag.x
-  msg_mag.magnetic_field.y = msg_in.Mag.y
-  msg_mag.magnetic_field.z = msg_in.Mag.z
-  pub_mag.publish(msg_mag)
-  
-  msg_temp = Temperature()
-  msg_temp.header.stamp     = msg_in.header.stamp
-  msg_temp.header.frame_id  = msg_in.header.frame_id
-  msg_temp.temperature      = msg_in.Temp
-  pub_temp.publish(msg_temp)
-  
-  msg_baro = FluidPressure()
-  msg_baro.header.stamp     = msg_in.header.stamp
-  msg_baro.header.frame_id  = msg_in.header.frame_id
-  msg_baro.fluid_pressure   = msg_in.Pressure / 1000.0
-  pub_baro.publish(msg_baro)
-  
+#  msg_mag = MagneticField()
+#  msg_mag.header.stamp     = msg_in.header.stamp
+#  msg_mag.header.frame_id  = msg_in.header.frame_id
+#  msg_mag.magnetic_field.x = msg_in.Mag.x
+#  msg_mag.magnetic_field.y = msg_in.Mag.y
+#  msg_mag.magnetic_field.z = msg_in.Mag.z
+#  pub_mag.publish(msg_mag)
+#  
+#  msg_temp = Temperature()
+#  msg_temp.header.stamp     = msg_in.header.stamp
+#  msg_temp.header.frame_id  = msg_in.header.frame_id
+#  msg_temp.temperature      = msg_in.Temp
+#  pub_temp.publish(msg_temp)
+#  
+#  msg_baro = FluidPressure()
+#  msg_baro.header.stamp     = msg_in.header.stamp
+#  msg_baro.header.frame_id  = msg_in.header.frame_id
+#  msg_baro.fluid_pressure   = msg_in.Pressure / 1000.0
+#  pub_baro.publish(msg_baro)
 
 
 def sub_insCB(msg_in): 
