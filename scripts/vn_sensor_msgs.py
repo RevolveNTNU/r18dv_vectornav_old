@@ -27,6 +27,7 @@ from copy             import deepcopy
 
 import rospy
 import tf
+import numpy as np
 
 from sensor_msgs.msg  import Imu
 from sensor_msgs.msg  import MagneticField
@@ -88,13 +89,16 @@ def sub_insCB(msg_in):
   
   global msg_imu
   
+  global offset
   msg_imu.header.stamp          = msg_in.header.stamp
   msg_imu.header.frame_id       = msg_in.header.frame_id
   
+  if np.isinf(offset):
+    offset = -(math.pi * msg_in.RPY.z) / 180
   # Convert the RPY data from the Vectornav into radians!
   roll  = (math.pi * msg_in.RPY.x) / 180.0
-  pitch = (math.pi * msg_in.RPY.y) / 180.0
-  yaw   = (math.pi * msg_in.RPY.z) / 180.0
+  pitch = -(math.pi * msg_in.RPY.y) / 180.0
+  yaw   = -(math.pi * msg_in.RPY.z) / 180.0-offset
   q = tf.transformations.quaternion_from_euler(roll, pitch, yaw)
   msg_imu.orientation.x = q[0]
   msg_imu.orientation.y = q[1]
@@ -137,6 +141,8 @@ if __name__ == '__main__':
   
   global msg_imu
     
+  global offset
+  offset = np.inf
   msg_imu = Imu()
   
   pub_imu  = rospy.Publisher("/Imu"          , Imu)
