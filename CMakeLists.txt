@@ -4,7 +4,7 @@ project(r18dv_vectornav)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED tf)
+find_package(catkin REQUIRED roscpp tf)
 
 ## System dependencies are found with CMake's conventions
 #find_package(Boost REQUIRED COMPONENTS system)
@@ -73,12 +73,19 @@ link_directories(vnproglib-1.1/cpp/build/bin)
 ## Declare a cpp library
 ## Declare a cpp executable
 add_executable(vn200_node src/vn200_node.cpp)
+add_executable(vnpub src/main.cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(vn200_node
   vncxx
   ${catkin_LIBRARIES}
 )
+
+target_link_libraries(vnpub
+  vncxx
+  ${catkin_LIBRARIES}
+)
+
 
 #############
 ## Install ##
