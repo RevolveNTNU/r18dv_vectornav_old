@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 	BinaryOutputRegister bor(
 		ASYNCMODE_PORT1,
 		1000 / async_output_rate,  // update rate [ms]
-		COMMONGROUP_QUATERNION | COMMONGROUP_ANGULARRATE | COMMONGROUP_POSITION | COMMONGROUP_ACCEL,
+		COMMONGROUP_QUATERNION | COMMONGROUP_ANGULARRATE | COMMONGROUP_ACCEL,
 		TIMEGROUP_NONE,
 		IMUGROUP_NONE,
 		GPSGROUP_NONE,
@@ -123,7 +123,7 @@ void BinaryAsyncMessageReceived(void* userData, Packet& p, size_t index)
 		// First make sure we have a binary packet type we expect since there
 		// are many types of binary output types that can be configured.
 		if (!p.isCompatible(
-			COMMONGROUP_QUATERNION | COMMONGROUP_ANGULARRATE | COMMONGROUP_POSITION | COMMONGROUP_ACCEL,
+			COMMONGROUP_QUATERNION | COMMONGROUP_ANGULARRATE  | COMMONGROUP_ACCEL,
 			TIMEGROUP_NONE,
 			IMUGROUP_NONE,
 			GPSGROUP_NONE,
@@ -136,14 +136,13 @@ void BinaryAsyncMessageReceived(void* userData, Packet& p, size_t index)
 		// Unpack the packet
 		vec4f q = p.extractVec4f();
 		vec3f ar = p.extractVec3f();
-		vec3d lla = p.extractVec3d();
 		vec3f al = p.extractVec3f();
 
 		
 		// Publish ROS Message
 		
 		// IMU
-		sensor_msgs::Imu msgIMU;
+    sensor_msgs::Imu msgIMU;
 		
 		msgIMU.header.stamp = ros::Time::now();
 		msgIMU.header.frame_id = frame_id;
@@ -156,24 +155,14 @@ void BinaryAsyncMessageReceived(void* userData, Packet& p, size_t index)
 		msgIMU.angular_velocity.x = ar[0];
 		msgIMU.angular_velocity.y = ar[1];
 		msgIMU.angular_velocity.z = ar[2];
-		
+	
 		msgIMU.linear_acceleration.x = al[0];
 		msgIMU.linear_acceleration.y = al[1];
 		msgIMU.linear_acceleration.z = al[2];
 		
     pubIMU.publish(msgIMU);
     
-    // GPS
-    sensor_msgs::NavSatFix msgGPS;
     
-    msgGPS.header.stamp = msgIMU.header.stamp;
-    msgGPS.header.frame_id = msgIMU.header.frame_id;
-
-    msgGPS.latitude = lla[0];
-    msgGPS.longitude = lla[1];
-    msgGPS.altitude = lla[2];
-
-    pubGPS.publish(msgGPS);
 	}
 }
 
