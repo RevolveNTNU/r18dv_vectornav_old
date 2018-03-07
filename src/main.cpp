@@ -56,8 +56,8 @@ int main(int argc, char *argv[])
   // ROS node init
   ros::init(argc, argv, "vectornav");
   ros::NodeHandle n;
-  pubIMU = n.advertise<sensor_msgs::Imu>("vectornav/IMU", 1000);
-  pubGPS = n.advertise<sensor_msgs::NavSatFix>("vectornav/GPS", 1000);
+  pubIMU = n.advertise<sensor_msgs::Imu>("/Imu", 1000);
+  pubGPS = n.advertise<sensor_msgs::NavSatFix>("/GPS", 1000);
 
   n.param<std::string>("frame_id", frame_id, "vectornav");
 
