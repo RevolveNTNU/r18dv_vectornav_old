@@ -57,10 +57,7 @@ int main(int argc, char *argv[])
   ros::init(argc, argv, "vectornav");
   ros::NodeHandle n;
   pubIMU = n.advertise<sensor_msgs::Imu>("vectornav/IMU", 1000);
-  pubMag = n.advertise<sensor_msgs::MagneticField>("vectornav/Mag", 1000);
   pubGPS = n.advertise<sensor_msgs::NavSatFix>("vectornav/GPS", 1000);
-  pubTemp = n.advertise<sensor_msgs::Temperature>("vectornav/Temp", 1000);
-  pubPres = n.advertise<sensor_msgs::FluidPressure>("vectornav/Pres", 1000);
 
   n.param<std::string>("frame_id", frame_id, "vectornav");
 
@@ -91,7 +88,7 @@ int main(int argc, char *argv[])
 	BinaryOutputRegister bor(
 		ASYNCMODE_PORT1,
 		1000 / async_output_rate,  // update rate [ms]
-		COMMONGROUP_TIMESTARTUP | COMMONGROUP_QUATERNION | COMMONGROUP_ANGULARRATE | COMMONGROUP_POSITION | COMMONGROUP_ACCEL | COMMONGROUP_MAGPRES,
+		COMMONGROUP_QUATERNION | COMMONGROUP_ANGULARRATE | COMMONGROUP_POSITION | COMMONGROUP_ACCEL,
 		TIMEGROUP_NONE,
 		IMUGROUP_NONE,
 		GPSGROUP_NONE,
@@ -126,7 +123,7 @@ void BinaryAsyncMessageReceived(void* userData, Packet& p, size_t index)
 		// First make sure we have a binary packet type we expect since there
 		// are many types of binary output types that can be configured.
 		if (!p.isCompatible(
-			COMMONGROUP_TIMESTARTUP | COMMONGROUP_QUATERNION | COMMONGROUP_ANGULARRATE | COMMONGROUP_POSITION | COMMONGROUP_ACCEL | COMMONGROUP_MAGPRES,
+			COMMONGROUP_QUATERNION | COMMONGROUP_ANGULARRATE | COMMONGROUP_POSITION | COMMONGROUP_ACCEL,
 			TIMEGROUP_NONE,
 			IMUGROUP_NONE,
 			GPSGROUP_NONE,
@@ -137,14 +134,10 @@ void BinaryAsyncMessageReceived(void* userData, Packet& p, size_t index)
 
 
 		// Unpack the packet
-		uint64_t timeStartup = p.extractUint64();
 		vec4f q = p.extractVec4f();
 		vec3f ar = p.extractVec3f();
 		vec3d lla = p.extractVec3d();
 		vec3f al = p.extractVec3f();
-		vec3f mag = p.extractVec3f();
-		float temp = p.extractFloat();
-		float pres = p.extractFloat();
 
 		
 		// Publish ROS Message
@@ -169,20 +162,6 @@ void BinaryAsyncMessageReceived(void* userData, Packet& p, size_t index)
 		msgIMU.linear_acceleration.z = al[2];
 		
     pubIMU.publish(msgIMU);
-
-    
-    // Magnetic Field
-    sensor_msgs::MagneticField msgMag;
-    
-    msgMag.header.stamp = msgIMU.header.stamp;
-    msgMag.header.frame_id = msgIMU.header.frame_id;
-
-    msgMag.magnetic_field.x = mag[0];
-    msgMag.magnetic_field.y = mag[1];
-    msgMag.magnetic_field.z = mag[2];
-
-    pubMag.publish(msgMag);
-    
     
     // GPS
     sensor_msgs::NavSatFix msgGPS;
@@ -195,29 +174,6 @@ void BinaryAsyncMessageReceived(void* userData, Packet& p, size_t index)
     msgGPS.altitude = lla[2];
 
     pubGPS.publish(msgGPS);
-    
-    
-    // Temperature
-    sensor_msgs::Temperature msgTemp;
-    
-    msgTemp.header.stamp = msgIMU.header.stamp;
-    msgTemp.header.frame_id = msgIMU.header.frame_id;
-    
-    msgTemp.temperature = temp;
-    
-    pubTemp.publish(msgTemp);
-    
-    
-    // Barometer
-    sensor_msgs::FluidPressure msgPres;
-    
-    msgPres.header.stamp = msgIMU.header.stamp;
-    msgPres.header.frame_id = msgIMU.header.frame_id;
-    
-    msgPres.fluid_pressure = pres;
-    
-    pubPres.publish(msgPres);
-  
 	}
 }
 
