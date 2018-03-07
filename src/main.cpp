@@ -77,8 +77,16 @@ int main(int argc, char *argv[])
 	// Query the sensor's model number.
 	string mn = vs.readModelNumber();	
   ROS_INFO("Model Number: %s", mn.c_str());
+  mat3f reference_rotation = mat3f(0.9997205,0.0166264,0.0168087,
+                                   -0.0169886,0.9996215,0.0216404,
+                                   0.0216404,-0.0219199,0.9996245);
 
+  vs.writeReferenceFrameRotation(reference_rotation,true);
+  //vs.writeSettings(false);
+  ros::Duration(0.5).sleep(); 
+  //vs.reset(false);
 	// Set Data output Freq [Hz]
+  ros::Duration(0.5).sleep(); 
 	int async_output_rate;
 	n.param<int>("async_output_rate", async_output_rate, 40);
 	vs.writeAsyncDataOutputFrequency(async_output_rate);
