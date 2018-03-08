@@ -81,6 +81,7 @@ int main(int argc, char *argv[])
                                    -0.0169886,0.9996215,0.0216404,
                                    0.0216404,-0.0219199,0.9996245);
 
+  vs.writeAsyncDataOutputType(VNOFF); 
   vs.writeReferenceFrameRotation(reference_rotation,true);
   //vs.writeSettings(false);
   ros::Duration(0.5).sleep(); 
@@ -88,7 +89,7 @@ int main(int argc, char *argv[])
 	// Set Data output Freq [Hz]
   ros::Duration(0.5).sleep(); 
 	int async_output_rate;
-	n.param<int>("async_output_rate", async_output_rate, 40);
+	n.param<int>("async_output_rate", async_output_rate, 200);
 	vs.writeAsyncDataOutputFrequency(async_output_rate);
   
   
