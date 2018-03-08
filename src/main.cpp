@@ -32,6 +32,7 @@
 #include "sensor_msgs/NavSatFix.h"
 #include "sensor_msgs/Temperature.h"
 #include "sensor_msgs/FluidPressure.h"
+#include "tf/transform_datatypes.h"
 
 ros::Publisher pubIMU, pubMag, pubGPS, pubTemp, pubPres;
 
@@ -49,6 +50,9 @@ using namespace vn::xplat;
 void BinaryAsyncMessageReceived(void* userData, Packet& p, size_t index);
 
 std::string frame_id;
+
+bool initialized = false;
+tf::Quaternion initial_quaternion;
 
 int main(int argc, char *argv[])
 {
@@ -160,7 +164,15 @@ void BinaryAsyncMessageReceived(void* userData, Packet& p, size_t index)
 		msgIMU.orientation.y = q[1];
 		msgIMU.orientation.z = q[2];
 		msgIMU.orientation.w = q[3];
-		
+    tf::Quaternion raw_quaternion;
+    tf::quaternionMsgToTF(msgIMU.orientation, raw_quaternion);
+    if(!initialized){
+      initial_quaternion = raw_quaternion;
+      initialized = true;
+    }
+    tf::Quaternion final_quaternion = raw_quaternion*initial_quaternion.inverse();
+    tf::quaternionTFToMsg(final_quaternion,msgIMU.orientation);
+
 		msgIMU.angular_velocity.x = ar[0];
 		msgIMU.angular_velocity.y = ar[1];
 		msgIMU.angular_velocity.z = ar[2];
