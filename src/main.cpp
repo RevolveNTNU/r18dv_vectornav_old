@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
   pubIMU = n.advertise<sensor_msgs::Imu>("/Imu", 1000);
   pubGPS = n.advertise<sensor_msgs::NavSatFix>("/GPS", 1000);
 
-  n.param<std::string>("frame_id", frame_id, "vectornav");
+  n.param<std::string>("frame_id", frame_id, "ins");
 
   // Serial Port Settings
 	string SensorPort;	
